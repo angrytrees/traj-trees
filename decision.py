@@ -113,7 +113,7 @@ def find_best_radius(idx, points, targets, max_radius=1):
             if distance_to_next_left < distance_to_next_right:
                 # move to the left
                 current_radius = distance_to_next_left
-                while distance_to_next_left == distance_to_next_right:
+                while distance_to_next_left == current_radius:
                     inside.add(points[left_idx])
                     outside.remove(points[left_idx])
                     left_idx -= 1

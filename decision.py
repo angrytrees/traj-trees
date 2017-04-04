@@ -1,3 +1,15 @@
+__author__ = 'Hoang Thanh Lam'
+__date__ = '31/03/17'
+import Geohash
+from error import SquareError
+import math
+
+# General idea: if we have a list of points, and the list is sorted according to the geohash of the points, then near
+# points in the list are also near to each other in the map. This is due to the property of geohash, if two points share
+# very long prefix in their geohash, they tend to be near to each other although not always.
+
+
+# Since the distance is relatively small, you can use the equirectangular distance approximation
 def haversine(point1, point2):
     # radius of the earth in km
     R = 6371
@@ -64,7 +76,9 @@ def find_decision_point(points, targets, max_radius=1):
     best_gain_so_far = 0
     best_decision_point = None
     print "len", len(sorted_points)
-    for idx in range(len(sorted_points)):
+    #for idx in range(len(sorted_points)):
+    for idx in range(2):
+        print "point id:", idx, sorted_points[idx]
         radius, gain = find_best_radius(idx, sorted_points, sorted_targets, max_radius)
         if best_gain_so_far < gain:
             best_gain_so_far = gain

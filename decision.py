@@ -8,7 +8,6 @@ import math
 # points in the list are also near to each other in the map. This is due to the property of geohash, if two points share
 # very long prefix in their geohash, they tend to be near to each other although not always.
 
-
 # Since the distance is relatively small, you can use the equirectangular distance approximation
 def haversine(point1, point2):
     # radius of the earth in km

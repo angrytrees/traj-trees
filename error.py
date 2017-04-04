@@ -3,6 +3,7 @@ __date__ = '31/03/17'
 import numpy as np
 
 
+
 # This class is designed to get sum of square error with respect to mean value of X ={x1,x2,...,xn}
 # SE = (x1-mean)^2 + (x2-mean)^2 + ...+ (xn-mean)^2
 # mean = (x1+x2+...+xn)/n

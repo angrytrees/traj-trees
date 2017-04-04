@@ -76,9 +76,7 @@ def find_decision_point(points, targets, max_radius=1):
     best_gain_so_far = 0
     best_decision_point = None
     print "len", len(sorted_points)
-    #for idx in range(len(sorted_points)):
-    for idx in range(2):
-        print "point id:", idx, sorted_points[idx]
+    for idx in range(len(sorted_points)):
         radius, gain = find_best_radius(idx, sorted_points, sorted_targets, max_radius)
         if best_gain_so_far < gain:
             best_gain_so_far = gain

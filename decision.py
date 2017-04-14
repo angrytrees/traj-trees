@@ -3,6 +3,8 @@ __date__ = '31/03/17'
 import Geohash
 from error import SquareError
 import math
+import numpy as np
+
 
 # General idea: if we have a list of points, and the list is sorted according to the geohash of the points, then near
 # points in the list are also near to each other in the map. This is due to the property of geohash, if two points share
@@ -74,7 +76,7 @@ def find_decision_point(points, targets, max_radius=1):
     best_radius = None
     best_gain_so_far = 0
     best_decision_point = None
-    print "len", len(sorted_points)
+    print("len", len(sorted_points))
     for idx in range(len(sorted_points)):
         radius, gain = find_best_radius(idx, sorted_points, sorted_targets, max_radius)
         if best_gain_so_far < gain:
@@ -197,3 +199,21 @@ def find_best_radius(idx, points, targets, max_radius=1):
             gain = new_gain
             best_radius = current_radius
     return best_radius, gain
+
+
+def get_inside_outside_points(center, radius, points):
+    """
+    get indices of the points that stay inside/outside a circle
+    :param center: a GPS point, center of the circle
+    :param radius: a radius
+    :param points: a list of GPS points
+    :return: inside and outside indices lists
+    """
+    inside = list()
+    outside = list()
+    for i in range(len(points)):
+        if haversine(points[i], center) < r:
+            inside += [i]
+        else:
+            outside += [i]
+    return inside, outside

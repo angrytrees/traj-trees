@@ -212,7 +212,7 @@ def get_inside_outside_points(center, radius, points):
     inside = list()
     outside = list()
     for i in range(len(points)):
-        if haversine(points[i], center) < r:
+        if haversine(points[i], center) < radius:
             inside += [i]
         else:
             outside += [i]

@@ -11,4 +11,4 @@ class Node:
         self.trajectory_idx = None
 
         # a list of indices of the starting points of the trajectories should be looked at for splitting the node
-        self.starting_point_idx = None
+        self.starting_points_idx = None

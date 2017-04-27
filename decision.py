@@ -217,3 +217,9 @@ def get_inside_outside_points(center, radius, points):
         else:
             outside += [i]
     return inside, outside
+
+
+def get_prediction_from_points(points):
+    lats = [point[0] for point in points]
+    lons = [point[1] for point in points]
+    return [np.mean(lats), np.mean(lons)]

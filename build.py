@@ -1,5 +1,5 @@
 # a set of functions that builds a tree
-from decision import find_decision_point, get_inside_outside_points
+from decision import find_decision_point, get_inside_outside_points, get_prediction_from_points
 from node import Node
 from tree import Tree
 from error import SquareError
@@ -45,10 +45,7 @@ class TreeBuilding:
             node.left = Node()
             # finding the prediction of the left node
             inside_targets = [targets[i] for i in inside]
-            left_targets = SquareError()
-            left_targets.add_list(np.array(inside_targets))
-            node.left.prediction = left_targets.sum_of_square_error()
-            del inside_targets, left_targets
+            node.left.prediction = get_prediction_from_points(inside_targets)
 
             # we need to delete trajectories which are too short for next possible starting point id
             inside_without_short_traj = [i for i in inside if len(self.trajectories[node.trajectory_idx[i]]) > (node.starting_points_idx[i] + 1)]
@@ -61,10 +58,7 @@ class TreeBuilding:
             node.right = Node()
             # finding the prediction of the right node
             outside_targets = [targets[i] for i in outside]
-            right_targets = SquareError()
-            right_targets.add_list(np.array(outside_targets))
-            node.right.prediction = right_targets.sum_of_square_error()
-            del outside_targets, right_targets
+            node.right.prediction = get_prediction_from_points(outside_targets)
 
             node.right.trajectory_idx = [node.trajectory_idx[i] for i in outside]
             node.right.starting_point_idx = [node.starting_points_idx[i] for i in outside]
@@ -97,9 +91,7 @@ class TreeBuilding:
         tree.root.trajectory_idx = list(range(0,len(self.trajectories)))
         tree.root.starting_points_idx = [0]*len(self.trajectories)
         # finding the prediction of the root node
-        root_points = SquareError()        
-        root_points.add_list(np.array(targets))
-        tree.root.prediction = root_points.sum_of_square_error()
+        tree.root.prediction = get_prediction_from_points(targets)
         del root_points
         return tree
 

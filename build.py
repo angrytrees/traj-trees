@@ -3,6 +3,7 @@ from decision import find_decision_point, get_inside_outside_points
 from node import Node
 from tree import Tree
 from error import SquareError
+import numpy as np
 
 
 class TreeBuilding:
@@ -45,7 +46,7 @@ class TreeBuilding:
             # finding the prediction of the left node
             inside_targets = [targets[i] for i in inside]
             left_targets = SquareError()
-            left_targets.add_list(inside_targets)
+            left_targets.add_list(np.array(inside_targets))
             node.left.prediction = left_targets.sum_of_square_error()
             del inside_targets, left_targets
 
@@ -61,7 +62,7 @@ class TreeBuilding:
             # finding the prediction of the right node
             outside_targets = [targets[i] for i in outside]
             right_targets = SquareError()
-            right_targets.add_list(outside_targets)
+            right_targets.add_list(np.array(outside_targets))
             node.right.prediction = right_targets.sum_of_square_error()
             del outside_targets, right_targets
 
@@ -96,8 +97,8 @@ class TreeBuilding:
         tree.root.trajectory_idx = list(range(0,len(self.trajectories)))
         tree.root.starting_points_idx = [0]*len(self.trajectories)
         # finding the prediction of the root node
-        root_points = SquareError()
-        root_points.add_list(targets)
+        root_points = SquareError()        
+        root_points.add_list(np.array(targets))
         tree.root.prediction = root_points.sum_of_square_error()
         del root_points
         return tree

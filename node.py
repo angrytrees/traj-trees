@@ -12,3 +12,12 @@ class Node:
 
         # a list of indices of the starting points of the trajectories should be looked at for splitting the node
         self.starting_points_idx = None
+
+        # a prediction worked at this node
+        self.prediction = None
+
+        # a decision point for this node (used for decision rule)
+        self.decision_point = None
+
+        # a decision radius for this node (used for decision rule)
+        self.radius = None

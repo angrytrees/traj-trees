@@ -92,7 +92,6 @@ class TreeBuilding:
         tree.root.starting_points_idx = [0]*len(self.trajectories)
         # finding the prediction of the root node
         tree.root.prediction = get_prediction_from_points(targets)
-        del root_points
         return tree
 
     def build_tree(self, trajectories, targets, max_radius, min_trajectories):

@@ -26,6 +26,8 @@ class TreeBuilding:
             return -1
 
         # get a list of starting points from the trajectories
+        #print [len(self.trajectories[node.trajectory_idx[i]]) for i in range(len(node.trajectory_idx))]
+
         points = [self.trajectories[node.trajectory_idx[i]][node.starting_points_idx[i]] for i in range(len(node.trajectory_idx))]
 
         # get a list of targets
@@ -51,7 +53,7 @@ class TreeBuilding:
             inside_without_short_traj = [i for i in inside if len(self.trajectories[node.trajectory_idx[i]]) > (node.starting_points_idx[i] + 1)]
 
             node.left.trajectory_idx  = [node.trajectory_idx[i] for i in inside_without_short_traj]
-            node.left.starting_point_idx = [node.starting_points_idx[i] + 1 for i in inside_without_short_traj]
+            node.left.starting_points_idx = [(node.starting_points_idx[i] + 1) for i in inside_without_short_traj]
 
         # create the right child node:
         if len(outside) > 0:
@@ -61,9 +63,9 @@ class TreeBuilding:
             node.right.prediction = get_prediction_from_points(outside_targets)
 
             node.right.trajectory_idx = [node.trajectory_idx[i] for i in outside]
-            node.right.starting_point_idx = [node.starting_points_idx[i] for i in outside]
+            node.right.starting_points_idx = [node.starting_points_idx[i] for i in outside]
 
-        # trajectory_idx and starting_point_idx for this node won't be used anymore
+        # trajectory_idx and starting_points_idx for this node won't be used anymore
         node.trajectory_idx = None
         node.starting_points_idx = None
 
@@ -94,7 +96,7 @@ class TreeBuilding:
         tree.root.prediction = get_prediction_from_points(targets)
         return tree
 
-    def build_tree(self, trajectories, targets, max_radius, min_trajectories):
+    def fit(self, trajectories, targets, max_radius, min_trajectories):
         """
         create the tree with initial root node
         :param trajectories: a list of all trajectories in the database
@@ -106,6 +108,44 @@ class TreeBuilding:
         tree = self.initialize_tree(trajectories, targets)
         self.split_node(tree.root, max_radius, min_trajectories)
         return tree
+
+    def predict(self, trajectories):
+        """
+        predict the objective of requested trajectories
+        :param trajectories: list of trajectories
+        :return: list of predicted values
+        """
+        return [predict_one(self, trajectory) for trajectory in trajectories]
+
+    def predict_one(self, trajectory):
+    """
+    predict only one element
+    :param trajectory: trajectory to predict
+    :return: predicted value
+    """
+    current_node = traj_tree.root
+    
+    for idx, point in enumerate(trajectory):
+        if len(trajectory) > (idx + 1):
+            if (current_node.left == None) and (current_node.right == None):
+                prediction = current_node.prediction
+                
+            elif (current_node.left == None) and (current_node.right != None):
+                current_node = current_node.right
+                
+            elif (current_node.left != None) and (current_node.right == None):
+                current_node = current_node.left
+                
+            else:
+                if haversine(point, current_node.decision_point) < current_node.radius:
+                    current_node = current_node.left
+                else:
+                    current_node = current_node.right
+                    
+        else:
+            prediction = current_node.prediction
+            
+    return prediction
 
 
 

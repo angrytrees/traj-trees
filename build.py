@@ -118,34 +118,34 @@ class TreeBuilding:
         return [predict_one(self, trajectory) for trajectory in trajectories]
 
     def predict_one(self, trajectory):
-    """
-    predict only one element
-    :param trajectory: trajectory to predict
-    :return: predicted value
-    """
-    current_node = traj_tree.root
-    
-    for idx, point in enumerate(trajectory):
-        if len(trajectory) > (idx + 1):
-            if (current_node.left == None) and (current_node.right == None):
-                prediction = current_node.prediction
-                
-            elif (current_node.left == None) and (current_node.right != None):
-                current_node = current_node.right
-                
-            elif (current_node.left != None) and (current_node.right == None):
-                current_node = current_node.left
-                
-            else:
-                if haversine(point, current_node.decision_point) < current_node.radius:
-                    current_node = current_node.left
-                else:
+        """
+        predict only one element
+        :param trajectory: trajectory to predict
+        :return: predicted value
+        """
+        current_node = traj_tree.root
+        
+        for idx, point in enumerate(trajectory):
+            if len(trajectory) > (idx + 1):
+                if (current_node.left == None) and (current_node.right == None):
+                    prediction = current_node.prediction
+                    
+                elif (current_node.left == None) and (current_node.right != None):
                     current_node = current_node.right
                     
-        else:
-            prediction = current_node.prediction
-            
-    return prediction
+                elif (current_node.left != None) and (current_node.right == None):
+                    current_node = current_node.left
+                    
+                else:
+                    if haversine(point, current_node.decision_point) < current_node.radius:
+                        current_node = current_node.left
+                    else:
+                        current_node = current_node.right
+                        
+            else:
+                prediction = current_node.prediction
+                
+        return prediction
 
 
 

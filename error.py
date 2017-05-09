@@ -28,7 +28,7 @@ class SquareError:
         :param x: an np.array
         :return: None
         """
-        self.sum_x2 += np.dot(x,x)
+        self.sum_x2 += np.multiply(x,x)
         self.sum_x += x
         self.n += 1
 
@@ -38,7 +38,7 @@ class SquareError:
         :param x: an np.array
         :return:
         """
-        self.sum_x2 -= np.dot(x,x)
+        self.sum_x2 -= np.multiply(x,x)
         self.sum_x -= x
         self.n -= 1
 
@@ -47,7 +47,8 @@ class SquareError:
         get sum of square error
         :return:
         """
-        return self.sum_x2 - np.dot(self.sum_x,self.sum_x)/self.n
+        vector_error = self.sum_x2 - np.multiply(self.sum_x,self.sum_x)/self.n
+        return np.dot(vector_error,vector_error)
 
     def add_list(self, x):
         """

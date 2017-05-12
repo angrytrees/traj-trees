@@ -26,7 +26,7 @@ def haversine(point1, point2):
     return d
 
 
-def get_geohash_index(points, precision=12):
+def get_geohash_index(points, precision=24):
     """
     get a list of geohash
     :param points: a list of GPS points
@@ -200,7 +200,7 @@ def find_best_radius(idx, points, targets, max_radius=1):
         outside_se = outside.sum_of_square_error()
         inside_se = inside.sum_of_square_error()
         new_gain = all_se - outside_se - inside_se
-        # print("aa", current_radius, max_radius, best_radius, gain, new_gain, idx)
+        print("aa", current_radius, max_radius, best_radius, gain, new_gain, idx)
         if gain < new_gain:
             gain = new_gain
             best_radius = current_radius

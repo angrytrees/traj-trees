@@ -20,7 +20,7 @@ air_trajs = pd.read_csv('air_trajs.csv',
 trajectories = list(air_trajs['POLYLINE'])
 targets = list(air_trajs['Destination'])
 
-X_train, X_test, y_train, y_test = train_test_split(trajectories, targets, train_size=0.005, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(trajectories, targets, train_size=0.1, random_state = 0)
 
 tb = TreeBuilding()
 tb = tb.fit(X_train, y_train, 10, 1)

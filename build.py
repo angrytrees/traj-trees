@@ -20,7 +20,7 @@ class TreeBuilding:
         :return:
         """
 
-        print "length", len(node.trajectory_idx)
+
         if len(node.trajectory_idx) <= min_trajectories:
             # the node doesn't has enough trajectories to split, stop splitting
             return -1

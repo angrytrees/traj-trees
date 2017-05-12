@@ -26,7 +26,7 @@ def haversine(point1, point2):
     return d
 
 
-def get_geohash_index(points, precision=12):
+def get_geohash_index(points, precision=24):
     """
     get a list of geohash
     :param points: a list of GPS points
@@ -78,6 +78,7 @@ def find_decision_point(points, targets, max_radius=1):
     best_decision_point = None
     print("len", len(sorted_points))
     for idx in range(len(sorted_points)):
+        print(idx, best_gain_so_far, best_radius)
         radius, gain = find_best_radius(idx, sorted_points, sorted_targets, max_radius)
         if best_gain_so_far < gain:
             best_gain_so_far = gain
@@ -105,12 +106,15 @@ def find_best_radius(idx, points, targets, max_radius=1):
     # square error of the points outside the circle, from the beginning no point is inside the circle
     inside = SquareError()
 
+    print(outside.n + inside.n, "xxx")
     left_idx = idx
     right_idx = idx
     current_radius = 0
     gain = 0
     best_radius = -1
+
     while current_radius < max_radius:
+
         if left_idx > 0 and right_idx < n-1:
             # if there are elements to the right and to the left
             distance_to_next_left = haversine(points[idx], points[left_idx - 1])
@@ -121,8 +125,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
                 # move to the left
                 current_radius = distance_to_next_left
                 while distance_to_next_left == current_radius:
-                    inside.add(points[left_idx])
-                    outside.remove(points[left_idx])
+                    inside.add(targets[left_idx])
+                    outside.remove(targets[left_idx])
                     left_idx -= 1
                     if left_idx == 0:
                         break
@@ -133,8 +137,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
                 # move to the right
                 current_radius = distance_to_next_right
                 while distance_to_next_right == current_radius:
-                    inside.add(points[right_idx])
-                    outside.remove(points[right_idx])
+                    inside.add(targets[right_idx])
+                    outside.remove(targets[right_idx])
                     right_idx += 1
                     if right_idx == n-1:
                         break
@@ -146,8 +150,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
                 current_radius = distance_to_next_left
                 #left move
                 while distance_to_next_left == current_radius:
-                    inside.add(points[left_idx])
-                    outside.remove(points[left_idx])
+                    inside.add(targets[left_idx])
+                    outside.remove(targets[left_idx])
                     left_idx -= 1
                     if left_idx == 0:
                         break
@@ -156,8 +160,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
                         
                 #right move
                 while distance_to_next_right == current_radius:
-                    inside.add(points[right_idx])
-                    outside.remove(points[right_idx])
+                    inside.add(targets[right_idx])
+                    outside.remove(targets[right_idx])
                     right_idx += 1
                     if right_idx == n-1:
                         break
@@ -168,8 +172,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
             distance_to_next_right = haversine(points[idx], points[right_idx + 1])
             current_radius = distance_to_next_right
             while distance_to_next_right == current_radius:
-                inside.add(points[right_idx])
-                outside.remove(points[right_idx])
+                inside.add(targets[right_idx])
+                outside.remove(targets[right_idx])
                 right_idx += 1
                 if right_idx == n-1:
                     break
@@ -180,8 +184,8 @@ def find_best_radius(idx, points, targets, max_radius=1):
             distance_to_next_left = haversine(points[idx], points[left_idx - 1])
             current_radius = distance_to_next_left
             while distance_to_next_left == current_radius:
-                inside.add(points[left_idx])
-                outside.remove(points[left_idx])
+                inside.add(targets[left_idx])
+                outside.remove(targets[left_idx])
                 left_idx -= 1
                 if left_idx == 0:
                     break
@@ -191,13 +195,16 @@ def find_best_radius(idx, points, targets, max_radius=1):
         else:
             break
 
+        # print("bbb", outside.n + inside.n, outside.n, inside.n, outside.sum_x, inside.sum_x, outside.sum_x2, inside.sum_x2)
         # update gain
         outside_se = outside.sum_of_square_error()
         inside_se = inside.sum_of_square_error()
         new_gain = all_se - outside_se - inside_se
+        print("aa", current_radius, max_radius, best_radius, gain, new_gain, idx)
         if gain < new_gain:
             gain = new_gain
             best_radius = current_radius
+    print("oo", best_radius, gain)
     return best_radius, gain
 
 

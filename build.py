@@ -20,6 +20,7 @@ class TreeBuilding:
         :return:
         """
 
+        print len(node.trajectory_idx)
 
         if len(node.trajectory_idx) <= min_trajectories:
             # the node doesn't has enough trajectories to split, stop splitting
@@ -69,12 +70,19 @@ class TreeBuilding:
         node.trajectory_idx = None
         node.starting_points_idx = None
 
+        if (len(inside) == 0) or (len(outside) == 0):
+            # trajectories cannot be splitted further without prediction loss, stop splitting
+            return -1
+
         # recursively split the left child
-        if len(inside_without_short_traj) > 0:
-            self.split_node(node.left, max_radius, min_trajectories)
+        if len(inside) > 0:
+            if len(inside_without_short_traj) > 0:
+                print 'left'
+                self.split_node(node.left, max_radius, min_trajectories)
 
         # recursively split the right child
         if len(outside) > 0:
+            print 'right'
             self.split_node(node.right, max_radius, min_trajectories)
 
         return 1

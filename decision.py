@@ -76,9 +76,9 @@ def find_decision_point(points, targets, max_radius=1):
     best_radius = None
     best_gain_so_far = 0
     best_decision_point = None
-    print("len", len(sorted_points))
+    #print("len", len(sorted_points))
     for idx in range(len(sorted_points)):
-        print(idx, best_gain_so_far, best_radius)
+        #print(idx, best_gain_so_far, best_radius)
         radius, gain = find_best_radius(idx, sorted_points, sorted_targets, max_radius)
         if best_gain_so_far < gain:
             best_gain_so_far = gain
@@ -106,7 +106,7 @@ def find_best_radius(idx, points, targets, max_radius=1):
     # square error of the points outside the circle, from the beginning no point is inside the circle
     inside = SquareError()
 
-    print(outside.n + inside.n, "xxx")
+    #print(outside.n + inside.n, "xxx")
     left_idx = idx
     right_idx = idx
     current_radius = 0
@@ -200,11 +200,11 @@ def find_best_radius(idx, points, targets, max_radius=1):
         outside_se = outside.sum_of_square_error()
         inside_se = inside.sum_of_square_error()
         new_gain = all_se - outside_se - inside_se
-        print("aa", current_radius, max_radius, best_radius, gain, new_gain, idx)
+        #print("aa", current_radius, max_radius, best_radius, gain, new_gain, idx)
         if gain < new_gain:
             gain = new_gain
             best_radius = current_radius
-    print("oo", best_radius, gain)
+    #print("oo", best_radius, gain)
     return best_radius, gain
 
 

@@ -49,6 +49,7 @@ class TreeBuilding:
             # finding the prediction of the left node
             inside_targets = [targets[i] for i in inside]
             node.left.prediction = get_prediction_from_points(inside_targets)
+            node.left.num_trajs = len(inside)
 
             # we need to delete trajectories which are too short for next possible starting point id
             inside_without_short_traj = [i for i in inside if len(self.trajectories[node.trajectory_idx[i]]) > (node.starting_points_idx[i] + 1)]
@@ -62,6 +63,7 @@ class TreeBuilding:
             # finding the prediction of the right node
             outside_targets = [targets[i] for i in outside]
             node.right.prediction = get_prediction_from_points(outside_targets)
+            node.right.num_trajs = len(outside)
 
             node.right.trajectory_idx = [node.trajectory_idx[i] for i in outside]
             node.right.starting_points_idx = [node.starting_points_idx[i] for i in outside]

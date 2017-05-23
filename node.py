@@ -21,3 +21,6 @@ class Node:
 
         # a decision radius for this node (used for decision rule)
         self.radius = None
+
+        # a number of trajectories in this node
+        self.num_trajs = None

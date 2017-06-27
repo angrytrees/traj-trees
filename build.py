@@ -118,44 +118,6 @@ class TreeBuilding:
         self.split_node(tree.root, max_radius, min_trajectories)
         return tree
 
-    def predict(self, trajectories):
-        """
-        predict the objective of requested trajectories
-        :param trajectories: list of trajectories
-        :return: list of predicted values
-        """
-        return [predict_one(self, trajectory) for trajectory in trajectories]
-
-    def predict_one(self, trajectory):
-        """
-        predict only one element
-        :param trajectory: trajectory to predict
-        :return: predicted value
-        """
-        current_node = traj_tree.root
-        
-        for idx, point in enumerate(trajectory):
-            if len(trajectory) > (idx + 1):
-                if (current_node.left == None) and (current_node.right == None):
-                    prediction = current_node.prediction
-                    
-                elif (current_node.left == None) and (current_node.right != None):
-                    current_node = current_node.right
-                    
-                elif (current_node.left != None) and (current_node.right == None):
-                    current_node = current_node.left
-                    
-                else:
-                    if haversine(point, current_node.decision_point) < current_node.radius:
-                        current_node = current_node.left
-                    else:
-                        current_node = current_node.right
-                        
-            else:
-                prediction = current_node.prediction
-                
-        return prediction
-
 
 
 

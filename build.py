@@ -20,7 +20,7 @@ class TreeBuilding:
         :return:
         """
 
-        print len(node.trajectory_idx)
+        #print len(node.trajectory_idx)
         node.num_trajs = len(node.trajectory_idx)
 
         if len(node.trajectory_idx) <= min_trajectories:
@@ -78,12 +78,12 @@ class TreeBuilding:
         # recursively split the left child
         if len(inside) > 0:
             if len(inside_without_short_traj) > 0:
-                print 'left'
+                #print 'left'
                 self.split_node(node.left, max_radius, min_trajectories)
 
         # recursively split the right child
         if len(outside) > 0:
-            print 'right'
+            #print 'right'
             self.split_node(node.right, max_radius, min_trajectories)
 
         return 1

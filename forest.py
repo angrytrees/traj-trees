@@ -1,3 +1,5 @@
+import numpy as np
+
 class Forest:
     def __init__(self):
         self.trees = list()  # the root node of the tree
@@ -12,19 +14,18 @@ class Forest:
         
     def predict(self, trajectories):
         """
-        predict only one trajectory
-        :param trajectory: trajectory to predict
-        :return: predicted value
+        predict the objective of requested trajectories
+        :param trajectories: list of trajectories
+        :return: list of predicted values
         """
         if len(self.trees) == 0:
             print "The forest is empty"
             return -1
         
-        tree_predictions = [] 
-        
-        
-    def predict_one():
-        print "predict one"
+        tree_predictions = np.array([tree.predict(trajectories) for tree in self.trees])
+
+        return [list(np.mean(tree_predictions[:,i], axis = 0)) for i in range(len(trajectories))]
         
     def score():
+        
         print "score is"

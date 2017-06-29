@@ -1,3 +1,5 @@
+from forest import Forest
+
 class ForestBuilding:
     #def __init__(self):
     #    self.trajectories = list()  # a list of all trajectories in the database

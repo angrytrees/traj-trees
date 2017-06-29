@@ -25,8 +25,8 @@ class Tree:
     	return np.mean(np.power([haversine(targets[i], predicted[i]) for i in xrange(len(targets))], 2))
 
     def predict_one(self, trajectory):
-    	"""
-        predict only one element
+        """
+        predict only one trajectory
         :param trajectory: trajectory to predict
         :return: predicted value
         """

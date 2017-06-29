@@ -1,4 +1,5 @@
 import numpy as np
+from decision import haversine
 
 class Forest:
     def __init__(self):
@@ -26,6 +27,12 @@ class Forest:
 
         return [list(np.mean(tree_predictions[:,i], axis = 0)) for i in range(len(trajectories))]
         
-    def score():
-        
-        print "score is"
+    def score(self, trajectories, targets):
+        """
+        Returns the mean haversine distance between the given and predicted targets
+        :param trajectories: test trajectories samples
+        :param targets: true targets
+        :return: mean haversine distance between the given and predicted targets
+        """
+        predicted = self.predict(trajectories)
+        return np.mean(np.power([haversine(targets[i], predicted[i]) for i in xrange(len(targets))], 2))
